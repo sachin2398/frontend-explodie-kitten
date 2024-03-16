@@ -1,6 +1,6 @@
-import React from 'react';
-import { Box, Typography } from '@material-ui/core';
-import { FiberManualRecord } from '@material-ui/icons';
+import React from "react";
+import { Box, Typography } from "@material-ui/core";
+import { FiberManualRecord } from "@material-ui/icons";
 
 const Header = ({ username }) => {
   return (
@@ -12,7 +12,8 @@ const Header = ({ username }) => {
       display="flex"
       justifyContent="space-between"
       alignItems="center"
-      bgcolor="#f0f0f0"
+      bgcolor="#333" /* Dark theme background color */
+      color="#FF4500" /* Text color */
     >
       <Typography component="h1" variant="h5">
         The Exploding Kitten

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -8,17 +8,17 @@ import {
   Grid,
   Typography,
   Divider,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import Header from './Header';
-import LeaderBoard from './LeaderBoard';
-import Card from './Card';
+import Header from "./Header";
+import LeaderBoard from "./LeaderBoard";
+import Card from "./Card";
 
-import './Card/style.css';
+import "./Card/style.css";
 
-import useStyles from './useStyles';
+import useStyles from "./useStyles";
 
-import { syncGameToDB } from '../../redux/actions/user';
+import { syncGameToDB } from "../../redux/actions/user";
 
 const Game = ({ game, syncGameToDB }) => {
   const classes = useStyles();
@@ -30,7 +30,7 @@ const Game = ({ game, syncGameToDB }) => {
     played: 0,
     win: 0,
     loose: 0,
-    status: 'loading',
+    status: "loading",
   });
 
   const { played, win, loose, status } = gameStatus;
@@ -43,17 +43,16 @@ const Game = ({ game, syncGameToDB }) => {
       GetCards = [...game?.savedGame.cards];
       defusing = game?.savedGame.defusingCard;
     } else {
-      const gameCards = ['cat', 'bomb', 'defusing', 'shuffle'];
+      const gameCards = ["cat", "bomb", "defusing", "shuffle"];
 
       for (let i = 0; i < 5; i++) {
         const index = Math.round(Math.random() * 3);
-
         GetCards.push(gameCards[index]);
       }
 
       setGameStatus((oldGameStatus) => ({
         ...oldGameStatus,
-        status: 'running',
+        status: "running",
       }));
     }
 
@@ -62,7 +61,7 @@ const Game = ({ game, syncGameToDB }) => {
       played: game?.played || oldGameStatus?.played,
       win: game?.win || oldGameStatus?.win,
       loose: game?.loose || oldGameStatus?.loose,
-      status: 'running',
+      status: "running",
     }));
 
     setCards([...GetCards]);
@@ -75,11 +74,7 @@ const Game = ({ game, syncGameToDB }) => {
 
   const drawCardHandler = (id) => {
     const el = document.querySelector(`#${id}`);
-
-    console.log(el);
-
-    el.classList.add('card--flipped');
-
+    el.classList.add("card--flipped");
     setTimeout(() => {
       runGameLogic();
     }, 800);
@@ -97,33 +92,31 @@ const Game = ({ game, syncGameToDB }) => {
       status,
     };
 
-    if (lastCard === 'shuffle') {
-      stats.status = 'restarting';
+    if (lastCard === "shuffle") {
+      stats.status = "restarting";
       stats.defusingCard = 0;
-
       setTimeout(() => {
         startGame();
       }, 1000);
-    } else if (lastCard === 'defusing') {
+    } else if (lastCard === "defusing") {
       stats.defusingCard++;
-    } else if (lastCard === 'bomb') {
+    } else if (lastCard === "bomb") {
       if (defusingCard > 0) {
         stats.defusingCard--;
-
-        lastCard = 'defusing';
+        lastCard = "defusing";
       } else {
         stats.played++;
         stats.loose++;
-        stats.status = 'loose';
+        stats.status = "loose";
         stats.defusingCard = 0;
       }
     }
 
-    if (leftCards.length === 0 && lastCard !== 'bomb') {
+    if (leftCards.length === 0 && lastCard !== "bomb") {
       stats.defusingCard = 0;
       stats.played++;
       stats.win++;
-      stats.status = 'win';
+      stats.status = "win";
     }
 
     setGameValues(
@@ -153,16 +146,16 @@ const Game = ({ game, syncGameToDB }) => {
         win: gWin,
         loose: gLoose,
       },
-      gStatus === 'running' ? gCards : [],
+      gStatus === "running" ? gCards : [],
       gDefusing
     );
   };
 
   return (
-    <Box position="relative">
+    <Box position="relative" bgcolor="#000" color="#fff">
       <Header username={game.username} />
 
-      <Container maxWidth={false}>
+      <Container maxWidth={false} className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
             <Box
@@ -175,7 +168,7 @@ const Game = ({ game, syncGameToDB }) => {
               alignItems="center"
             >
               <Box display="flex" justifyContent="center" alignItems="center">
-                {gameStatus.status === 'running' && (
+                {gameStatus.status === "running" && (
                   <Box position="relative" width={285} height={290}>
                     {cards.map((card, key) => (
                       <Box
@@ -200,24 +193,24 @@ const Game = ({ game, syncGameToDB }) => {
                   alignItems="center"
                   py={1}
                   color="#fff"
-                  bgcolor="#4d76a8"
+                  bgcolor="#444"
                 >
-                  {gameStatus.status === 'loose' ||
-                  gameStatus.status === 'win' ? (
-                    <Typography>
-                      You {status === 'win' ? 'won' : 'lost'}
+                  {gameStatus.status === "loose" ||
+                  gameStatus.status === "win" ? (
+                    <Typography style={{ color: "#FF4500" }}>
+                      You {status === "win" ? "won" : "lost"}
                     </Typography>
                   ) : (
                     <Typography>{cards.length} cards left</Typography>
                   )}
                 </Box>
 
-                {gameStatus.status === 'restarting' && (
+                {gameStatus.status === "restarting" && (
                   <Typography>Shuffling ...</Typography>
                 )}
 
-                {(gameStatus.status === 'loose' ||
-                  gameStatus.status === 'win') && (
+                {(gameStatus.status === "loose" ||
+                  gameStatus.status === "win") && (
                   <Box>
                     <Button onClick={() => startGame()} variant="contained">
                       Click Here to play Again
@@ -228,8 +221,23 @@ const Game = ({ game, syncGameToDB }) => {
             </Box>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Box boxShadow="0 0px 4px 0 rgba(0,0,0,0.12)" mb={4} pt={2}>
-              <Typography paragraph align="center">
+            <Box
+              mb={4}
+              pt={2}
+              style={{
+                backgroundColor: "#333333",
+                boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                color: "#fff",
+              }}
+            >
+              <Typography
+                paragraph
+                align="center"
+                style={{
+                  backgroundColor: "#333333",
+                  color: "#FFD700",
+                }}
+              >
                 <b>Game Stats</b>
               </Typography>
               <Box>
@@ -239,9 +247,17 @@ const Game = ({ game, syncGameToDB }) => {
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
+                  style={{
+                    backgroundColor: "#444",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                  }}
                 >
-                  <Typography>{`Played : `}</Typography>
-                  <Typography>{gameStatus.played}</Typography>
+                  <Typography
+                    style={{ color: "#00FFFF" }}
+                  >{`Played : `}</Typography>
+                  <Typography style={{ color: "#FF6347" }}>
+                    {gameStatus.played}
+                  </Typography>
                 </Box>
 
                 <Divider />
@@ -252,9 +268,17 @@ const Game = ({ game, syncGameToDB }) => {
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
+                  style={{
+                    backgroundColor: "#333333",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                  }}
                 >
-                  <Typography>{`Win : `}</Typography>
-                  <Typography>{gameStatus.win}</Typography>
+                  <Typography
+                    style={{ color: "#00FF7F" }}
+                  >{`Win : `}</Typography>
+                  <Typography style={{ color: "#FF6347" }}>
+                    {gameStatus.win}
+                  </Typography>
                 </Box>
 
                 <Divider />
@@ -265,9 +289,17 @@ const Game = ({ game, syncGameToDB }) => {
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
+                  style={{
+                    backgroundColor: "#444",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                  }}
                 >
-                  <Typography>{`Loose : `}</Typography>
-                  <Typography>{gameStatus.loose}</Typography>
+                  <Typography
+                    style={{ color: "#FFA500" }}
+                  >{`Loose : `}</Typography>
+                  <Typography style={{ color: "#FF6347" }}>
+                    {gameStatus.loose}
+                  </Typography>
                 </Box>
               </Box>
             </Box>
